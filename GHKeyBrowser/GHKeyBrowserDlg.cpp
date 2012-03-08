@@ -124,7 +124,6 @@ void CGHKeyBrowserDlg::CalcHashByHand(wchar_t* fileFullPath, wchar_t* existingBu
 		if (hash_start[i] == ' ') {
 			hash_start[i] = 0;
 			hash_size = strlen(hash_start);
-			hash_start[i] = ' ';
 			break;
 		}
 	}
