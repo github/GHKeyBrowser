@@ -208,15 +208,14 @@ BOOL CGHKeyBrowserDlg::OnInitDialog()
 	SetHandleInformation(hChildStdOutRd, HANDLE_FLAG_INHERIT, 0);
 
 	wchar_t ssh_path[MAX_PATH];
-	ExpandEnvironmentStrings(L"%HOMEDRIVE%%HOMEPATH%\\.ssh", ssh_path, MAX_PATH);
-	if (GetFileAttributes(ssh_path) == 0xFFFFFFFF) {
+	ExpandEnvironmentStrings(L"%HOMEDRIVE%%HOMEPATH%\\.ssh\\*.pub", ssh_path, MAX_PATH);
+
+	WIN32_FIND_DATA fd;
+	HANDLE hFd = FindFirstFile(ssh_path, &fd);
+	if (hFd == INVALID_HANDLE_VALUE) {
 		MessageBox(L"You don't appear to have any SSH keys!", L"~/.ssh doesn't exist");
 		TerminateProcess(GetCurrentProcess(), -1);
 	}
-
-	WIN32_FIND_DATA fd;
-	wcscat(ssh_path, L"\\*.pub");
-	HANDLE hFd = FindFirstFile(ssh_path, &fd);
 
 	wchar_t* fallback_buf = NULL;
 
